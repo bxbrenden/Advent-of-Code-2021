@@ -16,6 +16,22 @@ def read_input_file(filename):
         raise SystemExit
 
 
+def calc_depth_and_horiz(directions):
+    """Given a list of directions, calculate the depth and horiz. position."""
+    depth = 0
+    horiz = 0
+    for d in directions:
+        magnitude = int(d.split()[1])
+        if d.startswith('forward'):
+            horiz += magnitude
+        elif d.startswith('up'):
+            depth -= magnitude
+        elif d.startswith('down'):
+            depth += magnitude
+
+    return (depth, horiz)
+
+
 def main():
     USAGE = 'py3 day02_part1.py <INPUT_FILE>'
     try:
@@ -23,8 +39,11 @@ def main():
     except IndexError:
         raise SystemExit(USAGE)
 
-    for line in puzzle_input:
-        print(line)
+    depth, horiz = calc_depth_and_horiz(puzzle_input)
+    print(f'The depth is {depth}, and the horizontal position is {horiz}.')
+
+    product = depth * horiz
+    print(f'The product of depth and horizontal position is {product}.')
 
 
 if __name__ == '__main__':
