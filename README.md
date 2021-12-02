@@ -5,7 +5,7 @@ If it's anything like last year, I will go for 7 days until they ask me to trave
 
 ## Progress
 - [x] Day 01 ⭐⭐
-- [ ] Day 02
+- [x] Day 02 ⭐⭐
 - [ ] Day 03
 - [ ] Day 04
 - [ ] Day 05
