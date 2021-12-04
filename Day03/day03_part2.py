@@ -48,7 +48,7 @@ def get_oxygen_rating(diagnostics, index=0):
         if d[index] == freqs[index]:
             keepers.append(d)
 
-    print(f'After iteration {index + 1}, the following values were kept:')
+    print(f'After iteration {index + 1}, the following values were kept for oxygen:')
     for k in sorted(keepers):
         print(k)
     print()
@@ -60,14 +60,51 @@ def get_oxygen_rating(diagnostics, index=0):
         return get_oxygen_rating(keepers, index)
 
 
-def get_co2_rating(diagnostics):
+def get_co2_rating(diagnostics, index=0):
     """Get  the CO2 scrubber rating from the diagnostics."""
-    pass
+    # Data wrangling to make diags into a transposed numpy array
+    grid = []
+    for d in diagnostics:
+        ld = list(d)
+        grid.append(ld)
+
+    arr = np.array(grid)
+    arr = arr.transpose()
+
+    freqs = []
+    for row in arr:
+        c = Counter(row)
+        if c['0'] > c['1']:
+            freqs.append('1')
+        elif c['1'] > c['0']:
+            freqs.append('0')
+        elif c['1'] == c['0']:
+            freqs.append('0')
+    print(f'The value of freqs is: {freqs}')
+
+    # Decide which original diagnostics values to keep
+    keepers = []
+    for d in diagnostics:
+        if d[index] == freqs[index]:
+            keepers.append(d)
+
+    print(f'After iteration {index + 1}, the following values were kept for co2:')
+    for k in sorted(keepers):
+        print(k)
+    print()
+
+    if len(keepers) == 1:
+        return keepers[0]
+    else:
+        index += 1
+        return get_co2_rating(keepers, index)
 
 
 def get_life_support_rating(oxygen, co2):
     """Calculate life-support rating."""
-    return oxygen * co2
+    o = int(oxygen, 2)
+    c = int(co2, 2)
+    return o * c
 
 
 def main():
@@ -79,6 +116,10 @@ def main():
 
     oxy = get_oxygen_rating(puzzle_input)
     print(f'The oxygen generator rating is: {oxy}')
+    co2 = get_co2_rating(puzzle_input)
+    print(f'The CO2 rating is: {co2}')
+    life_support = get_life_support_rating(oxy, co2)
+    print(f'The life support rating is: {life_support}')
 
 
 if __name__ == '__main__':
