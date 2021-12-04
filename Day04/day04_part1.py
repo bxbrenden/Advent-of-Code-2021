@@ -38,6 +38,7 @@ class BingoBoard:
         self.grid = np.zeros((5, 5))
         self.bingo = False
         self.bingo_index = list('BINGO')
+        self.last_called = None
 
     def __str__(self):
         board_df = pd.DataFrame(self.board,
@@ -56,6 +57,7 @@ class BingoBoard:
             hit_x = hit[0][0]
             hit_y = hit[1][0]
             self.grid[hit_x][hit_y] = 1
+            self.last_called = number
 
     def check_for_bingo(self):
         row_sums = []
@@ -68,9 +70,24 @@ class BingoBoard:
             col_sums.append(np.sum(cols[m]))
 
         if 5 in row_sums or 5 in col_sums:
-            print('BINGO WAS HIS NAME-OH!\n')
+            print('BINGO WAS HIS NAME-OH!')
+            print(f'The last number called was {self.last_called}.\n')
             print(self)
+            self.calculate_final_score()
             return True
+
+    def calculate_final_score(self):
+        arr_coords = np.where(self.grid == 0)
+        x_coords = arr_coords[0].tolist()
+        y_coords = arr_coords[1].tolist()
+        coords = [z for z in zip(x_coords, y_coords)]
+        unmarked = 0
+        for c in coords:
+            unmarked += self.board[c[0]][c[1]]
+
+        print(f'Sum of the unmarked values on the board: {unmarked}')
+        final_score = self.last_called * unmarked
+        print(f'FINAL SCORE: {final_score}')
 
 
 def main():
