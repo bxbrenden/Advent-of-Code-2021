@@ -40,9 +40,22 @@ class BingoBoard:
         self.bingo_index = list('BINGO')
 
     def __str__(self):
-        board_df = pd.DataFrame(self.board, index=self.bingo_index, columns=self.bingo_index, dtype=np.int8)
-        grid_df = pd.DataFrame(self.grid, index=self.bingo_index, columns=self.bingo_index, dtype=np.int8)
+        board_df = pd.DataFrame(self.board,
+                                index=self.bingo_index,
+                                columns=self.bingo_index,
+                                dtype=np.int8)
+        grid_df = pd.DataFrame(self.grid,
+                               index=self.bingo_index,
+                               columns=self.bingo_index,
+                               dtype=np.int8)
         return str(pd.concat([board_df, grid_df], axis=1))
+
+    def update(self, number):
+        """Given a number, update the grid in the bingo board from 0 to 1."""
+        if hit := np.where(self.board == number):
+            hit_x = hit[0][0]
+            hit_y = hit[1][0]
+            self.grid[hit_x][hit_y] = 1
 
 
 def main():
@@ -54,9 +67,15 @@ def main():
 
     numbers, boards = get_numbers_and_boards(inp)
 
+    bingo_boards = []
     for board in boards:
         b = BingoBoard(board)
-        print(b, '\n')
+        bingo_boards.append(b)
+
+    first_num = numbers[0]
+    for b in bingo_boards:
+        b.update(first_num)
+        print(b, '\n\n')
 
 
 if __name__ == '__main__':
