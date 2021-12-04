@@ -57,6 +57,21 @@ class BingoBoard:
             hit_y = hit[1][0]
             self.grid[hit_x][hit_y] = 1
 
+    def check_for_bingo(self):
+        row_sums = []
+        col_sums = []
+        for n in range(len(self.grid)):
+            row_sums.append(np.sum(self.grid[n]))
+
+        cols = self.grid.transpose()
+        for m in range(len(cols)):
+            col_sums.append(np.sum(cols[m]))
+
+        if 5 in row_sums or 5 in col_sums:
+            print('BINGO WAS HIS NAME-OH!\n')
+            print(self)
+            return True
+
 
 def main():
     USAGE = 'py3 day04_part1.py <INPUT_FILE>'
@@ -72,10 +87,15 @@ def main():
         b = BingoBoard(board)
         bingo_boards.append(b)
 
-    first_num = numbers[0]
-    for b in bingo_boards:
-        b.update(first_num)
-        print(b, '\n\n')
+    bingo = False
+    for num in numbers:
+        for b in bingo_boards:
+            b.update(num)
+            print(b, '\n\n')
+            if b.check_for_bingo():
+                bingo = True
+        if bingo is True:
+            break
 
 
 if __name__ == '__main__':
