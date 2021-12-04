@@ -54,10 +54,11 @@ class BingoBoard:
     def update(self, number):
         """Given a number, update the grid in the bingo board from 0 to 1."""
         if hit := np.where(self.board == number):
-            hit_x = hit[0][0]
-            hit_y = hit[1][0]
-            self.grid[hit_x][hit_y] = 1
-            self.last_called = number
+            if hit[0].size > 0:
+                hit_x = hit[0][0]
+                hit_y = hit[1][0]
+                self.grid[hit_x][hit_y] = 1
+                self.last_called = number
 
     def check_for_bingo(self):
         row_sums = []
@@ -104,16 +105,12 @@ def main():
         b = BingoBoard(board)
         bingo_boards.append(b)
 
-    bingo = False
     for num in numbers:
         for b in bingo_boards:
             b.update(num)
             print(b, '\n\n')
             if b.check_for_bingo():
-                bingo = True
-        if bingo is True:
-            break
-
+                raise SystemExit
 
 if __name__ == '__main__':
     main()
