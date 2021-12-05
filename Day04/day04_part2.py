@@ -127,7 +127,6 @@ def main():
     for num in numbers:
         for b in bingo_boards:
             b.update(num)
-            print(b, '\n\n')
             b.check_for_bingo()
         if all([b.bingo for b in bingo_boards]):
             print('BINGO FOR ALL!!!')
