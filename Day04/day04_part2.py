@@ -127,9 +127,11 @@ def main():
     for num in numbers:
         for b in bingo_boards:
             b.update(num)
-            b.check_for_bingo()
+            if not b.bingo:
+                b.check_for_bingo()
         if all([b.bingo for b in bingo_boards]):
             print('BINGO FOR ALL!!!')
+            break
 
 
 if __name__ == '__main__':
