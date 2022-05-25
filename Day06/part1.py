@@ -16,27 +16,62 @@ def get_puzzle_input(sample=False):
 
 def get_initial_state(puzzle_input):
     """Split by commas and return as a list of ints."""
-    return puzzle_input.split(',')
+    return [int(x) for x in puzzle_input.split(',')]
 
 
 def print_status(state, num_days, first_run=False):
     """Print the status of the puzzle input's current value."""
-    fish = ','.join(state)
+    fish = ','.join([str(x) for x in state])
     if first_run:
-        template = f'Initial State: {fish}'
+        template = f'Initial state: {fish}'
     elif num_days == 1:
-        template = f'After {num_days} day: {fish}'
+        template = f'After  {num_days} day:  {fish}'
+    elif num_days > 1 and num_days < 10:
+        template = f'After  {num_days} days: {fish}'
     else:
         template = f'After {num_days} days: {fish}'
     print(template)
 
 
+def circle_of_life(state):
+    """Propagate the lanternfish species."""
+    new_state = []
+    new_fish = []
+    for s in state:
+        if s > 0:
+            s -= 1
+            new_state.append(s)
+        elif s == 0:
+            s = 6
+            new_state.append(s)
+            new_fish.append(8)
+
+    final_state = new_state + new_fish
+
+    return final_state
+
+
+def calculate_lanternfish(state, day, num_days, first_run=False):
+    """Calculate the number of lanternfish and display the results."""
+    if first_run:
+        print_status(state, day, first_run=True)
+        fish = state
+    else:
+        fish = circle_of_life(state)
+        print_status(fish, day)
+
+    day += 1
+    if day < num_days:
+        return calculate_lanternfish(fish, day, num_days)
+    else:
+        return
+
+
 def main():
     puzzle_input = get_puzzle_input(sample=True)
+    NUM_DAYS = 19
     initial_state = get_initial_state(puzzle_input)
-    print_status(initial_state, 0, first_run=True)
-    print_status(initial_state, 1)
-    print_status(initial_state, 2)
+    calculate_lanternfish(initial_state, 0, NUM_DAYS, first_run=True)
 
 
 if __name__ == '__main__':
