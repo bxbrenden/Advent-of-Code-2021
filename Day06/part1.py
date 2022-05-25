@@ -64,14 +64,22 @@ def calculate_lanternfish(state, day, num_days, first_run=False):
     if day < num_days:
         return calculate_lanternfish(fish, day, num_days)
     else:
-        return
+        return fish
+
+
+def get_lanternfish_population(fish):
+    return len(fish)
 
 
 def main():
-    puzzle_input = get_puzzle_input(sample=True)
-    NUM_DAYS = 19
+    # puzzle_input = get_puzzle_input(sample=True)
+    puzzle_input = get_puzzle_input()
+    NUM_DAYS = 81
     initial_state = get_initial_state(puzzle_input)
-    calculate_lanternfish(initial_state, 0, NUM_DAYS, first_run=True)
+    lanternfish = calculate_lanternfish(initial_state, 0, NUM_DAYS, first_run=True)
+    # print(lanternfish)
+    population = get_lanternfish_population(lanternfish)
+    print(f'\nThere are {population} lanternfish.')
 
 
 if __name__ == '__main__':
