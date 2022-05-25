@@ -74,6 +74,7 @@ def is_right_column(coord, grid):
 def find_low_points(grid):
     """Find the low points."""
     low_points = []
+    risk = 0
     for x, row in enumerate(grid):
         for y, column in enumerate(row):
             current = (x, y)
@@ -84,52 +85,84 @@ def find_low_points(grid):
                 # If right and below are greater, this is a low point
                 right = grid[x][y+1]
                 below = grid[x+1][y]
-                print(f'The coord to the right of the top-left corner is {right} at coords: ({x}, {y+1})')
-                print(f'The coord below the top-left corner is {below} at coords: ({x+1}, {y})')
+                if right > point and below > point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for top-right corner
             elif is_top_row(current) and is_right_column(current, grid):
                 print(f'Found top-right corner at ({x}, {y})). Value = {grid[x][y]}')
                 # If left and below are greater, this is a low point
+                left = grid[x][y-1]
+                below = grid[x-1][y]
+                if left > point and below > point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for top row
             elif is_top_row(current):
-                pass
+                # If left, right, and below are greater, this is a low point
+                left = grid[x][y-1]
+                right = grid[x][y+1]
+                below = grid[x-1][y]
+                if left > point and right > point and below > point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for bottom-left corner
             elif is_bottom_row(current, grid) and is_left_column(current):
                 print(f'Found bottom-left corner at ({x}, {y})). Value = {grid[x][y]}')
+                # If right and above are greater, this is a low point
+                right = grid[x][y+1]
+                above = grid[x-1][y]
+                if right > point and above > point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for bottom-right corner
             elif is_bottom_row(current, grid) and is_right_column(current, grid):
                 print(f'Found bottom-right corner at ({x}, {y})). Value = {grid[x][y]}')
+                # If left and above are greater, this is a low point
+                left = grid[x][y-1]
+                above = grid[x-1][y]
+                if left > point and above > point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for bottom row
             elif is_bottom_row(current, grid):
-                pass
+                # If left, right, and above are greater, this is a low point
+                left = grid[x][y-1]
+                right = grid[x][y+1]
+                above = grid[x-1][y]
+                # if left > point and right > point and above > point:
+                if min(left, right, above, point) == point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for left column
             elif is_left_column(current):
-                pass
+                # If right, above, and below are greater, this is a low point
+                right = grid[x][y+1]
+                above = grid[x-1][y]
+                below = grid[x+1][y]
+                if min(right, above, below, point) == point:
+                    low_points.append(current)
+                    risk += point + 1
             # Check for right column
             elif is_right_column(current, grid):
-                pass
+                # If left, above, and below are greater, this is a low point
+                left = grid[x][y-1]
+                above = grid[x-1][y]
+                below = grid[x+1][y]
+                if min(left, above, below, point) == point:
+                    low_points.append(current)
+                    risk += point + 1
             # All others have 4 adjacents:
             else:
-                pass
-    """- If coordinate is in TOP row and is NOT a corner:
-         - 3 adjacent values possible: left, right, and below
-       - If coordinate is in TOP row and is a LEFT corner:
-         - 2 adjacent values possible: right and below
-       - If coordinate is in TOP row and is a RIGHT corner:
-         - 2 adjacent values possible: left and below
-
-       - If coordinate is in BOTTOM row and is NOT a corner:
-         - 3 adjacent values possible: left, right, and above
-       - If coordinate is in BOTTOM row and is a LEFT corner:
-         - 2 adjacent values possible: right and above
-       - If coordinate is in BOTTOM row and is a RIGHT corner:
-         - 2 adjacent values possible: left and above
-
-       - If coordinate is in LEFT column:
-         - 3 adjacent values possible: right, up, and down
-       - If coordinate is in RIGHT column:
-         - 3 adjacent values possible: left, up, and down
-    """
+                # If left, right, above, and below are greater, this is a low point:
+                left = grid[x][y-1]
+                right = grid[x][y+1]
+                above = grid[x-1][y]
+                below = grid[x+1][y]
+                if min(left, right, above, below, point) == point:
+                    low_points.append(current)
+                    risk += point + 1
+    return (low_points, risk)
 
 
 def main():
@@ -165,8 +198,9 @@ def main():
         # assert (is_bottom_row(bottom_left, grid) and is_left_column(bottom_left))
         # assert (is_bottom_row(bottom_right, grid) and is_right_column(bottom_right, grid))
 
-    low_points = find_low_points(grid)
-    print(low_points)
+    low_points, risk = find_low_points(grid)
+    print(f'Low point coordinates:\n{low_points}')
+    print(f'Total risk: {risk}')
 
 
 if __name__ == '__main__':
