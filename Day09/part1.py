@@ -73,9 +73,63 @@ def is_right_column(coord, grid):
 
 def find_low_points(grid):
     """Find the low points."""
+    low_points = []
     for x, row in enumerate(grid):
         for y, column in enumerate(row):
-            print(f'coordinate: ({x}, {y}), value: {column}')
+            current = (x, y)
+            point = grid[x][y]
+            # Check for top-left corner
+            if is_top_row(current) and is_left_column(current):
+                print(f'Found top-left corner at ({x}, {y})). Value = {grid[x][y]}')
+                # If right and below are greater, this is a low point
+                right = grid[x][y+1]
+                below = grid[x+1][y]
+                print(f'The coord to the right of the top-left corner is {right} at coords: ({x}, {y+1})')
+                print(f'The coord below the top-left corner is {below} at coords: ({x+1}, {y})')
+            # Check for top-right corner
+            elif is_top_row(current) and is_right_column(current, grid):
+                print(f'Found top-right corner at ({x}, {y})). Value = {grid[x][y]}')
+                # If left and below are greater, this is a low point
+            # Check for top row
+            elif is_top_row(current):
+                pass
+            # Check for bottom-left corner
+            elif is_bottom_row(current, grid) and is_left_column(current):
+                print(f'Found bottom-left corner at ({x}, {y})). Value = {grid[x][y]}')
+            # Check for bottom-right corner
+            elif is_bottom_row(current, grid) and is_right_column(current, grid):
+                print(f'Found bottom-right corner at ({x}, {y})). Value = {grid[x][y]}')
+            # Check for bottom row
+            elif is_bottom_row(current, grid):
+                pass
+            # Check for left column
+            elif is_left_column(current):
+                pass
+            # Check for right column
+            elif is_right_column(current, grid):
+                pass
+            # All others have 4 adjacents:
+            else:
+                pass
+    """- If coordinate is in TOP row and is NOT a corner:
+         - 3 adjacent values possible: left, right, and below
+       - If coordinate is in TOP row and is a LEFT corner:
+         - 2 adjacent values possible: right and below
+       - If coordinate is in TOP row and is a RIGHT corner:
+         - 2 adjacent values possible: left and below
+
+       - If coordinate is in BOTTOM row and is NOT a corner:
+         - 3 adjacent values possible: left, right, and above
+       - If coordinate is in BOTTOM row and is a LEFT corner:
+         - 2 adjacent values possible: right and above
+       - If coordinate is in BOTTOM row and is a RIGHT corner:
+         - 2 adjacent values possible: left and above
+
+       - If coordinate is in LEFT column:
+         - 3 adjacent values possible: right, up, and down
+       - If coordinate is in RIGHT column:
+         - 3 adjacent values possible: left, up, and down
+    """
 
 
 def main():
@@ -93,25 +147,26 @@ def main():
     # top = (0, 2)
     # left = (1, 0)
     # right = (3, 9)
-    # bottom = (4, 5)
+        # bottom = (4, 5)
 
-    # assert is_top_row(top)
-    # assert is_left_column(left)
-    # assert is_right_column(right, grid)
-    # assert is_bottom_row(bottom, grid)
+        # assert is_top_row(top)
+        # assert is_left_column(left)
+        # assert is_right_column(right, grid)
+        # assert is_bottom_row(bottom, grid)
 
-    # Isolate the corners
-    # top_left = corners[0]
-    # top_right = corners[1]
-    # bottom_left = corners[2]
-    # bottom_right = corners[3]
+        # Isolate the corners
+        # top_left = corners[0]
+        # top_right = corners[1]
+        # bottom_left = corners[2]
+        # bottom_right = corners[3]
 
-    # assert (is_top_row(top_left) and is_left_column(top_left))
-    # assert (is_top_row(top_right) and is_right_column(top_right, grid))
-    # assert (is_bottom_row(bottom_left, grid) and is_left_column(bottom_left))
-    # assert (is_bottom_row(bottom_right, grid) and is_right_column(bottom_right, grid))
+        # assert (is_top_row(top_left) and is_left_column(top_left))
+        # assert (is_top_row(top_right) and is_right_column(top_right, grid))
+        # assert (is_bottom_row(bottom_left, grid) and is_left_column(bottom_left))
+        # assert (is_bottom_row(bottom_right, grid) and is_right_column(bottom_right, grid))
 
-    find_low_points(grid)
+    low_points = find_low_points(grid)
+    print(low_points)
 
 
 if __name__ == '__main__':
