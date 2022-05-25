@@ -11,7 +11,7 @@ If it's anything like last year, I will go for 7 days until they ask me to trave
 - [ ] Day 05
 - [x] Day 06 ⭐
 - [x] Day 07 ⭐⭐
-- [ ] Day 08
+- [x] Day 08 ⭐
 - [ ] Day 09
 - [ ] Day 10
 - [ ] Day 11
