@@ -39,9 +39,43 @@ def find_corners(grid):
     return corners
 
 
-def find_low_point():
+def is_top_row(coord):
+    """Return True if coordinate is in the top row."""
+    if coord[0] == 0:
+        return True
+    else:
+        return False
+
+
+def is_bottom_row(coord, grid):
+    """Return True if coordinate is in the bottom row."""
+    if coord[0] == len(grid) - 1:
+        return True
+    else:
+        return False
+
+
+def is_left_column(coord):
+    """Return True if coordinate is in the leftmost column."""
+    if coord[1] == 0:
+        return True
+    else:
+        return False
+
+
+def is_right_column(coord, grid):
+    """Return True if coordinateis in the rightmost column."""
+    if coord[1] == len(grid[0]) - 1:
+        return True
+    else:
+        return False
+
+
+def find_low_points(grid):
     """Find the low points."""
-    pass
+    for x, row in enumerate(grid):
+        for y, column in enumerate(row):
+            print(f'coordinate: ({x}, {y}), value: {column}')
 
 
 def main():
@@ -53,6 +87,31 @@ def main():
     corners = find_corners(grid)
     for corner in corners:
         print(corner)
+
+    # Testing the coordinates of my two-dimensional array
+
+    # top = (0, 2)
+    # left = (1, 0)
+    # right = (3, 9)
+    # bottom = (4, 5)
+
+    # assert is_top_row(top)
+    # assert is_left_column(left)
+    # assert is_right_column(right, grid)
+    # assert is_bottom_row(bottom, grid)
+
+    # Isolate the corners
+    # top_left = corners[0]
+    # top_right = corners[1]
+    # bottom_left = corners[2]
+    # bottom_right = corners[3]
+
+    # assert (is_top_row(top_left) and is_left_column(top_left))
+    # assert (is_top_row(top_right) and is_right_column(top_right, grid))
+    # assert (is_bottom_row(bottom_left, grid) and is_left_column(bottom_left))
+    # assert (is_bottom_row(bottom_right, grid) and is_right_column(bottom_right, grid))
+
+    find_low_points(grid)
 
 
 if __name__ == '__main__':
