@@ -102,7 +102,7 @@ def find_low_points(grid):
                 # If left, right, and below are greater, this is a low point
                 left = grid[x][y-1]
                 right = grid[x][y+1]
-                below = grid[x-1][y]
+                below = grid[x+1][y]
                 if left > point and right > point and below > point:
                     low_points.append(current)
                     risks.append(point)
@@ -130,8 +130,7 @@ def find_low_points(grid):
                 left = grid[x][y-1]
                 right = grid[x][y+1]
                 above = grid[x-1][y]
-                # if left > point and right > point and above > point:
-                if min(left, right, above, point) == point:
+                if left > point and right > point and above > point:
                     low_points.append(current)
                     risks.append(point)
             # Check for left column
@@ -140,7 +139,7 @@ def find_low_points(grid):
                 right = grid[x][y+1]
                 above = grid[x-1][y]
                 below = grid[x+1][y]
-                if min(right, above, below, point) == point:
+                if right > point and above > point and below > point:
                     low_points.append(current)
                     risks.append(point)
             # Check for right column
@@ -149,7 +148,7 @@ def find_low_points(grid):
                 left = grid[x][y-1]
                 above = grid[x-1][y]
                 below = grid[x+1][y]
-                if min(left, above, below, point) == point:
+                if left > point and above > point and below > point:
                     low_points.append(current)
                     risks.append(point)
             # All others have 4 adjacents:
@@ -159,15 +158,15 @@ def find_low_points(grid):
                 right = grid[x][y+1]
                 above = grid[x-1][y]
                 below = grid[x+1][y]
-                if min(left, right, above, below, point) == point:
+                if left > point and right > point and above > point and below > point:
                     low_points.append(current)
                     risks.append(point)
     return (low_points, risks)
 
 
 def main():
-    puzzle_input = get_puzzle_input(sample=True)
-    # puzzle_input = get_puzzle_input()
+    # puzzle_input = get_puzzle_input(sample=True)
+    puzzle_input = get_puzzle_input()
     grid = get_initial_state(puzzle_input)
     for row in grid:
         print(row)
@@ -200,8 +199,7 @@ def main():
 
     low_points, risks = find_low_points(grid)
     print(f'Low point coordinates:\n{low_points}')
-    for risk in risks:
-        print(risk + 1)
+    print(risks)
     total_risk = sum([x+1 for x in risks])
     print(f'Total risk: {total_risk}')
 
